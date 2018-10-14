@@ -1,11 +1,12 @@
 import React from "react";
 import { render } from "react-dom";
-import { Router, Link } from "@reach/router";
+import { Router } from "@reach/router";
 import { Provider } from "./SearchContext";
 import Results from "./Results";
 import Details from "./Details";
 import SearchParams from "./SearchParams";
 import { petfinder } from "./Api";
+import NavBar from "./Navbar";
 
 class App extends React.Component {
   constructor(props) {
@@ -64,12 +65,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header>
-          <Link to="/">Adopt me!</Link>
-          <Link to="/search-params">
-            <i className="fas fa-search" />
-          </Link>
-        </header>
+        <NavBar />
         <Provider value={this.state}>
           <Router>
             <Results path="/" />
