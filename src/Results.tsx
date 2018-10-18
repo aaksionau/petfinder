@@ -3,15 +3,17 @@ import Pet from "./Pet";
 import { petfinder } from "./Api";
 import Search from "./SearchBox";
 import { connect } from "react-redux";
+import { RouteComponentProps } from "@reach/router";
+import Props from "./Props";
 
-class Results extends React.Component {
-  state = {
+class Results extends React.Component<RouteComponentProps<Props>> {
+  public state = {
     pets: []
   };
-  componentDidMount() {
+  public componentDidMount() {
     this.search();
   }
-  search = () => {
+  public search = () => {
     petfinder.pet
       .find({
         output: "full",
@@ -73,4 +75,3 @@ const mapStateToProps = ({ location, breed, animal }) => ({
 });
 
 export default connect(mapStateToProps)(Results);
-

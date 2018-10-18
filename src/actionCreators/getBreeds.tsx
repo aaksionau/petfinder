@@ -1,7 +1,19 @@
 import { petfinder } from "../Api";
 
+interface State {
+  animal: string;
+}
+
+interface ActionCreator {
+  type: string;
+  payload: string[];
+}
+
 export default function getBreeds() {
-  return function getBreedsThunk(dispatch, getState) {
+  return function getBreedsThunk(
+    dispatch: (obj: ActionCreator) => void,
+    getState: () => State
+  ) {
     const { animal } = getState();
 
     if (animal) {

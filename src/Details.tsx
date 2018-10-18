@@ -1,37 +1,48 @@
+import { navigate, RouteComponentProps } from "@reach/router";
+import pf, { PetMedia, PetResponse } from "petfinder-client";
 import React from "react";
-import Loadable from "react-loadable";
-import pf from "petfinder-client";
-import { navigate } from "@reach/router";
 import Carousel from "./Carousel";
 import Modal from "./Modal";
+
+if (!process.env.API_KEY || !process.env.API_SECRET) {
+  throw new Error("API_KEY or API_SECRET dont exist");
+}
 
 const petfinder = pf({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET
 });
 
-const loading = () => <h1>Loading content...</h1>;
-const LoadableContent = Loadable({
-  loader: () => import("./AdoptModalContent"),
-  loading: loading
-});
-
-class Details extends React.Component {
-  state = {
+class Details extends React.Component<RouteComponentProps<{ id: string }>> {
+  public state = {
     loading: true,
-    showModal: false
+    showModal: false,
+    animal: "",
+    name: "",
+    breed: "",
+    location: "",
+    description: "",
+    media: {} as PetMedia
   };
-  toggleModal = () => this.setState({ showModal: !this.state.showModal });
-  componentDidMount() {
+  public toggleModal = () =>
+    this.setState({ showModal: !this.state.showModal });
+  public componentDidMount() {
+    if (!this.props.id) {
+      return;
+    }
     petfinder.pet
       .get({
         output: "full",
         id: this.props.id
       })
-      .then(data => {
+      .then((data: PetResponse) => {
+        if (!data.petfinder.pet) {
+          navigate("/");
+          return;
+        }
         const pet = data.petfinder.pet;
         let breed;
-        if (Array.isArray.apply(pet.breeds.breed)) {
+        if (Array.isArray(pet.breeds.breed)) {
           breed = pet.breeds.breed.join(" ");
         } else {
           breed = pet.breeds.breed;
@@ -51,7 +62,7 @@ class Details extends React.Component {
         navigate("/");
       });
   }
-  render() {
+  public render() {
     if (this.state.loading) {
       return <h1>loading...</h1>;
     }
@@ -75,9 +86,7 @@ class Details extends React.Component {
           <button onClick={this.toggleModal}>Adopt {name}</button>
           <p>{description}</p>
           {showModal ? (
-            <Modal>
-              <LoadableContent toggleModal={this.toggleModal} name={name} />
-            </Modal>
+            <Modal toggleModal={this.toggleModal} name={name} />
           ) : null}
         </div>
       </div>

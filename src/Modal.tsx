@@ -1,9 +1,12 @@
 import React from "react";
 import { createPortal } from "react-dom";
+import { RouteComponentProps } from "@reach/router";
 
 const modalRoot = document.getElementById("modal");
 
-class Modal extends React.Component {
+class Modal extends React.Component<
+  RouteComponentProps<{ toggleModal: () => void; name: string }>
+> {
   private el = document.createElement("div");
 
   public componentDidMount() {
