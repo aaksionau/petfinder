@@ -1,29 +1,13 @@
-import React from "react";
-import Loadable from "react-loadable";
-import { render } from "react-dom";
-import { Router } from "@reach/router";
-import { Provider } from "react-redux";
+import React from "preact-compat";
+import { render } from "preact-compat";
+import { Router } from "preact-router";
+import { Provider } from "preact-redux";
 import store from "./store";
 import NavBar from "./Navbar";
 
-const LoadableDetails = Loadable({
-  loader: () => import("./Details"),
-  loading() {
-    return <h1>Loading details Component...</h1>;
-  }
-});
-const LoadableResults = Loadable({
-  loader: () => import("./Results"),
-  loading() {
-    return <h1>Loading details Component...</h1>;
-  }
-});
-const LoadableSearchParams = Loadable({
-  loader: () => import("./SearchParams"),
-  loading() {
-    return <h1>Loading details Component...</h1>;
-  }
-});
+import Results from "./Results";
+import Details from "./Details";
+import SearchParams from "./SearchParams";
 
 class App extends React.Component {
   render() {
@@ -32,9 +16,9 @@ class App extends React.Component {
         <NavBar />
         <Provider store={store}>
           <Router>
-            <LoadableResults path="/" />
-            <LoadableDetails path="/details/:id" />
-            <LoadableSearchParams path="/search-params/" />
+            <Results path="/" />
+            <Details path="/details/:id" />
+            <SearchParams path="/search-params/" />
           </Router>
         </Provider>
       </div>

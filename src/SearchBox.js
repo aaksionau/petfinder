@@ -1,6 +1,6 @@
-import React from "react";
+import React from "preact-compat";
 import { ANIMALS } from "petfinder-client";
-import { connect } from "react-redux";
+import { connect } from "preact-redux";
 import getBreeds from "./actionCreators/getBreeds";
 import changeBreed from "./actionCreators/changeBreed";
 import changeAnimal from "./actionCreators/changeAnimal";

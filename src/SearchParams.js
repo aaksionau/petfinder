@@ -1,10 +1,10 @@
-import React from "react";
+import React from "preact-compat";
 import Search from "./SearchBox";
-import { navigate } from "@reach/router";
+import { route } from "preact-router";
 
 class SearchParams extends React.Component {
   handleSearchSubmit() {
-    navigate("/");
+    route("/");
   }
   render() {
     return (

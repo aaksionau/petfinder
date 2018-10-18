@@ -1,8 +1,8 @@
-import React from "react";
+import React from "preact-compat";
 import Pet from "./Pet";
 import { petfinder } from "./Api";
 import Search from "./SearchBox";
-import { connect } from "react-redux";
+import { connect } from "preact-redux";
 
 class Results extends React.Component {
   state = {
@@ -73,4 +73,3 @@ const mapStateToProps = ({ location, breed, animal }) => ({
 });
 
 export default connect(mapStateToProps)(Results);
-
