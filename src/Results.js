@@ -1,8 +1,8 @@
 import React from "react";
-import { Consumer } from "./SearchContext";
 import Pet from "./Pet";
 import { petfinder } from "./Api";
-import SearchBox from "./SearchBox";
+import Search from "./SearchBox";
+import { connect } from "react-redux";
 
 class Results extends React.Component {
   state = {
@@ -15,9 +15,9 @@ class Results extends React.Component {
     petfinder.pet
       .find({
         output: "full",
-        location: this.props.searchParams.location,
-        animal: this.props.searchParams.animal,
-        breed: this.props.searchParams.breed
+        location: this.props.location,
+        animal: this.props.animal,
+        breed: this.props.breed
       })
       .then(data => {
         let pets;
@@ -40,7 +40,7 @@ class Results extends React.Component {
   render() {
     return (
       <div className="search">
-        <SearchBox search={this.search} />
+        <Search search={this.search} />
         {this.state.pets.map(pet => {
           let breed;
           if (Array.isArray.apply(pet.breeds.breed)) {
@@ -66,10 +66,11 @@ class Results extends React.Component {
   }
 }
 
-export default function ResultsWithContext(props) {
-  return (
-    <Consumer>
-      {context => <Results {...props} searchParams={context} />}
-    </Consumer>
-  );
-}
+const mapStateToProps = ({ location, breed, animal }) => ({
+  location,
+  animal,
+  breed
+});
+
+export default connect(mapStateToProps)(Results);
+

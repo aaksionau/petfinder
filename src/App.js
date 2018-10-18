@@ -2,8 +2,8 @@ import React from "react";
 import Loadable from "react-loadable";
 import { render } from "react-dom";
 import { Router } from "@reach/router";
-import { Provider } from "./SearchContext";
-import { petfinder } from "./Api";
+import { Provider } from "react-redux";
+import store from "./store";
 import NavBar from "./Navbar";
 
 const LoadableDetails = Loadable({
@@ -26,64 +26,11 @@ const LoadableSearchParams = Loadable({
 });
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: "Minneapolis, MN",
-      animal: "",
-      breed: "",
-      breeds: [],
-      handleAnimalChange: this.handleAnimalChange,
-      handleBreedChange: this.handleBreedChange,
-      handleLocationChange: this.handleLocationChange,
-      getBreeds: this.getBreeds
-    };
-  }
-  handleLocationChange = e => {
-    this.setState({
-      location: e.target.value
-    });
-  };
-  handleAnimalChange = e => {
-    this.setState(
-      {
-        animal: e.target.value,
-        breed: ""
-      },
-      this.getBreeds
-    );
-  };
-  handleBreedChange = e => {
-    this.setState({
-      breed: e.target.value
-    });
-  };
-  getBreeds() {
-    if (this.state.animal) {
-      petfinder.breed.list({ animal: this.state.animal }).then(data => {
-        if (
-          data.petfinder &&
-          data.petfinder.breeds &&
-          Array.isArray(data.petfinder.breeds.breed)
-        ) {
-          this.setState({
-            breeds: data.petfinder.breeds.breed
-          });
-        } else {
-          this.setState({
-            breeds: data.petfinder.breeds
-          });
-        }
-      });
-    } else {
-      this.setState({ breeds: [] });
-    }
-  }
   render() {
     return (
       <div>
         <NavBar />
-        <Provider value={this.state}>
+        <Provider store={store}>
           <Router>
             <LoadableResults path="/" />
             <LoadableDetails path="/details/:id" />
